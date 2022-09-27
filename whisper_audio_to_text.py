@@ -1,6 +1,6 @@
 import whisper
 
-name_file = "data/Will Sasso"
+name_file = "data/a_hassan07102020"
 path_file = f"{name_file}.mp3"
 
 model = whisper.load_model("small")
@@ -13,7 +13,7 @@ if transcribe:
     name_of_transcribed_file = f"{name_file}_transcribed.txt"
 else:
     # load audio and pad/trim it to fit 30 seconds
-    audio = whisper.load_audio(name_file)
+    audio = whisper.load_audio(path_file)
     audio = whisper.pad_or_trim(audio)
 
     # make log-Mel spectrogram and move to the same device as the model

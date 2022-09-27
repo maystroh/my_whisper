@@ -2,9 +2,9 @@
 This is just my version of whisper. For deep understanding of whisper, we refer the reader to the [official page of Whisper](github.com/openai/whisper). 
 So far, we just added 3 files:
 
-``youtube_search.py -> it downloads the playlist information of LexFridman podcast ``. 
+``youtube_search.py -> it downloads the playlist information of LexFridman podcast ``
 
-``ydl_script.py -> it downloads one of the videos and converts it to a mp3 file ``. 
+``ydl_script.py -> it downloads one of the videos and converts it to a mp3 file ``
 
 Then, to get it transcribed, we launch the following command:
 
