@@ -1,37 +1,52 @@
 import whisper
+import argparse
+import glob
+import tqdm
 
-name_file = "data/a_hassan07102020"
-path_file = f"{name_file}.mp3"
+# python whisper_audio_to_text.py --path-folder=data
 
-model = whisper.load_model("small")
-transcribe = False
+parser = argparse.ArgumentParser(description='Whisper simple usage', add_help=False)
+parser.add_argument('--whisper-model', type=str, default='small', help='tiny | base | small | medium | large')
+parser.add_argument('--path-file', type=str, help='path of the audio file to transcribe')
+parser.add_argument('--path-folder', type=str, help='Transcribe the audio files in this folder')
+parser.add_argument('--transcribe-whole-files', action='store_true', help='Transcribe the whole audio file(s)')
+args = parser.parse_args()
 
-if transcribe:
-    result = model.transcribe(path_file)
-    print(result)
-    extracted_text = result['text']
-    name_of_transcribed_file = f"{name_file}_transcribed.txt"
+if args.path_folder is not None:
+    # glob all files ending with mp3 extension
+    audio_files = glob.glob(f'{args.path_folder}/*.mp3')
 else:
-    # load audio and pad/trim it to fit 30 seconds
-    audio = whisper.load_audio(path_file)
-    audio = whisper.pad_or_trim(audio)
+    audio_files = [args.path_file]
 
-    # make log-Mel spectrogram and move to the same device as the model
-    mel = whisper.log_mel_spectrogram(audio).to(model.device)
+model = whisper.load_model(args.whisper_model)
 
-    # detect the spoken languagem
-    _, probs = model.detect_language(mel)
-    print(f"Detected language: {max(probs, key=probs.get)}")
+for path_file in tqdm.tqdm(audio_files):
+    print(path_file)
 
-    # decode the audio
-    options = whisper.DecodingOptions()
-    result = whisper.decode(model, mel, options)
+    if args.transcribe_whole_files:
+        result = model.transcribe(path_file)
+        extracted_text = result['text']
+        name_of_transcribed_file = f"{path_file}_transcribed.txt"
+    else:
+        # load audio and pad/trim it to fit 30 seconds
+        audio = whisper.load_audio(path_file)
+        audio = whisper.pad_or_trim(audio)
 
-    # print the recognized text
-    print(result.text)
-    extracted_text = result.text
-    name_of_transcribed_file = f"{name_file}_30sec.txt"
+        # make log-Mel spectrogram and move to the same device as the model
+        mel = whisper.log_mel_spectrogram(audio).to(model.device)
 
+        # detect the spoken languagem
+        _, probs = model.detect_language(mel)
+        print(f"Detected language: {max(probs, key=probs.get)}")
 
-with open(name_of_transcribed_file, "w") as f:
-    f.write(extracted_text)
+        # decode the audio
+        options = whisper.DecodingOptions()
+        result = whisper.decode(model, mel, options)
+
+        # print the recognized text
+        print(result.text)
+        extracted_text = result.text
+        name_of_transcribed_file = f"{path_file}_30sec.txt"
+
+    with open(name_of_transcribed_file, "w") as f:
+        f.write(extracted_text)
