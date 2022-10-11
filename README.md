@@ -11,5 +11,6 @@ We can either download a Youtube video by its url or a playlist (channel) by the
 
 Then, to get the audio files transcribed, we launch the following command:
 
-``python whisper_audio_to_text.py --path-folder=yt_Letitia_transformers/ --transcribe-whole-files``
+``python whisper_audio_to_text.py --path-folder=yt_Letitia_transformers/ --transcribe-whole-files``.
+
 It actually reads the audio files in the folder `yt_Letitia_transformers` and transcribes then into a `txt` file 
