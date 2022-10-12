@@ -2,8 +2,7 @@ import json
 import yt_dlp
 import argparse
 import os
-
-# python ydl_script.py --youtube-json-videos=HH_videos.json
+import pandas as pd
 
 parser = argparse.ArgumentParser(description='Youtube download configurations', add_help=False)
 parser.add_argument('--youtube-link-video', type=str, help='Direct link of youtube video')
@@ -78,12 +77,17 @@ if not os.path.exists(args.op_folder):
     os.mkdir(args.op_folder)
 
 if args.youtube_json_videos is not None:
+    data_info = []
     f = open(args.youtube_json_videos)
     data = json.load(f)
     for video in data:
         print(video['title'])
         print(video['link'])
-        download_youtube_video(video['link'], my_hook, args.op_folder, args.op_format, video['title'])
+        data_info.append([video['title'], video['link'], video['link']])
+        # download_youtube_video(video['link'], my_hook, args.op_folder, args.op_format, video['title'])
+
+    df = pd.DataFrame(data_info, columns={'Titles', 'Links', 'Url_page'})
+    df.to_csv(f"{args.op_folder}/info.csv", index=False)
 else:
     # Download only one YouTube video
     download_youtube_video(args.youtube_link_video, my_hook, args.op_folder, args.op_format)

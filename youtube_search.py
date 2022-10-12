@@ -15,14 +15,17 @@ parser.add_argument('--playlist-name', type=str, help='Youtube playlist name')
 args = parser.parse_args()
 
 assert args.channel_id is None or args.playlist_url is None, 'You should either provide a ' \
-                                                                            'youtube channel ID or youtube ' \
-                                                                            'playlist url '
+                                                             'youtube channel ID or youtube ' \
+                                                             'playlist url '
 
 name_playlist = args.playlist_name
 playlist_url = args.playlist_url if args.channel_id is None else playlist_from_channel_id(args.channel_id)
 
 playlist = Playlist(playlist_url)
 print(f'Videos Retrieved: {len(playlist.videos)}')
+
+customSearch = CustomSearch('PLsVLn8u-d_UDZ4VML84ifzmq70tCSTxoc', VideoSortOrder.uploadDate, limit=1)
+print(customSearch.result())
 
 playlistVideos = playlist.getVideos(playlist_url)
 videos_play = playlistVideos['videos']
@@ -38,4 +41,3 @@ with open(f"{name_playlist}_videos.json", "w") as outfile:
     outfile.write(json_object)
 
 print('Found all the videos.')
-
