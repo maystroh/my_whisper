@@ -16,4 +16,4 @@ Then, to get the audio files transcribed, we launch the following command:
 It actually reads the audio files in the folder `yt_Letitia_transformers` and transcribes then into a `txt` file 
 
 ### HTML page
-Inspired by [Karpathy tweet](https://twitter.com/karpathy/status/1574501715990102016), we generate a page listing the videos with their transcriptions, we use ``generate_html_content`` script to generate the body of a template html page we have. Please check `letitiatransformers.html` to see an example.
+Inspired by [Karpathy tweet](https://twitter.com/karpathy/status/1574501715990102016), we generate web pages listing the videos with the generated text. We use ``generate_html_content`` script to generate the body of a template html page we have. Please check `letitiatransformers.html` to see an example.
