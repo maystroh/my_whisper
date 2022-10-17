@@ -15,6 +15,10 @@ Then, to get the audio files transcribed, we launch the following command:
 
 It actually reads the audio files in the folder `yt_Letitia_transformers` and transcribes then into a `txt` file 
 
+OR use `Whisper` API:
+
+``whisper audio.mp3 --model medium``
+
 ### Notebook
 In a latest update on `Whisper` main repository, they added a notebook called `Youtube_ASR`. Please use it to download and transcribe/translate any Youtube video.
 
