@@ -4,7 +4,7 @@ This is just my version of whisper. For deep understanding of whisper, we refer 
 In case you work with a playlist or channel, here is how to get their information:
 
 ``python youtube_search.py --playlist-url=https://www.youtube.com/playlist?list=PLpZBeKTZRGPMddKHcsJAOIghV8MwzwQV6 --playlist-name=yt_Letitia_transformers``
-> Get the playlist ID and append it to this url https://www.youtube.com/playlist?list= to make sure this script works properly.
+> Get the playlist ID and append it to this url `https://www.youtube.com/playlist?list=` to make sure this script works properly.
 
 We can either download a Youtube video by its url or a playlist (or channel) by the json file generated from the previous command:
 
