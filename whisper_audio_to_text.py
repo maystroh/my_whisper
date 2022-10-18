@@ -6,17 +6,20 @@ import tqdm
 # python whisper_audio_to_text.py --path-folder=data
 
 parser = argparse.ArgumentParser(description='Whisper simple usage', add_help=False)
-parser.add_argument('--whisper-model', type=str, default='small', help='tiny | base | small | medium | large')
+parser.add_argument('--whisper-model', type=str, default='small', choices=['tiny', 'base', 'small', 'medium', 'large'])
 parser.add_argument('--path-file', type=str, help='path of the audio file to transcribe')
 parser.add_argument('--path-folder', type=str, help='Transcribe the audio files in this folder')
+parser.add_argument('--extension', type=str, default='wav', help='Extension of the files to be transcribed')
 parser.add_argument('--transcribe-whole-files', action='store_true', help='Transcribe the whole audio file(s)')
 args = parser.parse_args()
 
 if args.path_folder is not None:
     # glob all files ending with mp3 extension
-    audio_files = glob.glob(f'{args.path_folder}/*.mp3')
+    audio_files = glob.glob(f'{args.path_folder}/*.{args.extension}')
 else:
     audio_files = [args.path_file]
+
+assert len(audio_files) > 0, 'Please specify a path for a folder or a file to process'
 
 model = whisper.load_model(args.whisper_model)
 

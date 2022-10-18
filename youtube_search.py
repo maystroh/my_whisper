@@ -24,9 +24,6 @@ playlist_url = args.playlist_url if args.channel_id is None else playlist_from_c
 playlist = Playlist(playlist_url)
 print(f'Videos Retrieved: {len(playlist.videos)}')
 
-customSearch = CustomSearch('PLsVLn8u-d_UDZ4VML84ifzmq70tCSTxoc', VideoSortOrder.uploadDate, limit=1)
-print(customSearch.result())
-
 playlistVideos = playlist.getVideos(playlist_url)
 videos_play = playlistVideos['videos']
 
@@ -37,7 +34,7 @@ while playlist.hasMoreVideos:
 
 # Serializing json
 json_object = json.dumps(playlist.videos, indent=4)
-with open(f"{name_playlist}_videos.json", "w") as outfile:
+with open(f"yt_{name_playlist}_videos.json", "w") as outfile:
     outfile.write(json_object)
 
 print('Found all the videos.')
