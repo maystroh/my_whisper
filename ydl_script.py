@@ -88,9 +88,9 @@ def download_yt_video(video_link, output_folder, format, to_wav):
             filename=f"{video_title}.mp4"
         )
     elif format == 'video':
-        video_yt.streams.filter(file_extension='mov').order_by('resolution').desc().first().download(
+        video_yt.streams.filter(file_extension='mp4').order_by('resolution').desc().first().download(
             output_path=output_folder,
-            filename=f"{video_title}.mov"
+            filename=f"{video_title}.mp4"
         )
 
 
