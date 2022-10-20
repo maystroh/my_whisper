@@ -11,6 +11,7 @@ parser.add_argument('--youtube-link-video', type=str, help='Direct link of youtu
 parser.add_argument('--youtube-json-videos', type=str, help='Extracted Youtube videos json list')
 
 parser.add_argument('--op-format', type=str, default='audio', choices=['video', 'audio', 'images'])
+parser.add_argument('--op-video-res', type=str, default='720p', choices=['720p', '480p', '360p', '240p', '144p'])
 parser.add_argument('--op-folder', type=str, default='./data', help='Output folder path')
 
 parser.add_argument('--to-wav-format', action='store_true', help='Convert files to wav format for lossless '
@@ -25,6 +26,8 @@ assert args.youtube_link_video is None or args.youtube_json_videos is None, 'You
 assert args.op_format == 'audio' or args.op_format == 'video' or args.op_format == 'images', 'Only audio, images and ' \
                                                                                              'video formats are ' \
                                                                                              'supported '
+
+supported_video_resolutions = ['720p', '480p', '360p', '240p', '144p']
 
 def my_hook(d):
     if d['status'] == 'finished':
@@ -88,7 +91,24 @@ def download_yt_video(video_link, output_folder, format, to_wav):
             filename=f"{video_title}.mp4"
         )
     elif format == 'video':
-        video_yt.streams.filter(file_extension='mp4').order_by('resolution').desc().first().download(
+        video_res = args.op_video_res
+        index_res = supported_video_resolutions.index(video_res)
+
+        video_stream = video_yt.streams.get_by_resolution(video_res)
+        if video_stream is None:
+            print(f'The resolution {video_res} has not been found --> going to fetch lower resolutions (We only support lower resolutions)..')
+            for ind in range(index_res+1, len(supported_video_resolutions)):
+                video_res = supported_video_resolutions[ind]
+                video_stream = video_yt.streams.get_by_resolution(supported_video_resolutions[ind])
+                if video_stream is not None:
+                    break
+                else:
+                    print(f'The resolution {video_res} has not been found --> going to fetch lower resolutions')
+
+        assert video_stream is not None, 'No resolution has been found to download!! '
+        print(video_stream)
+
+        video_stream.download(
             output_path=output_folder,
             filename=f"{video_title}.mp4"
         )
